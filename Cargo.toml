@@ -1,0 +1,20 @@
+[package]
+name = "git-rs"
+version = "0.1.0"
+edition = "2021"
+authors = ["git-rs contributors"]
+description = "A Rust implementation of Git - simpler than libgit2 but handling everyday Git usage"
+
+[[bin]]
+name = "git-rs"
+path = "src/main.rs"
+
+[dependencies]
+clap = { version = "4.5", features = ["derive"] }
+sha1 = "0.10"
+flate2 = "1.0"
+hex = "0.4"
+anyhow = "1.0"
+
+[dev-dependencies]
+tempfile = "3.8"
