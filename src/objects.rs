@@ -104,7 +104,8 @@ impl Object {
     /// Compress the object data using zlib
     pub fn compress(&self) -> Result<Vec<u8>> {
         let serialized = self.serialize();
-        let mut encoder = flate2::write::ZlibEncoder::new(Vec::new(), flate2::Compression::default());
+        let compression = flate2::Compression::default();
+        let mut encoder = flate2::write::ZlibEncoder::new(Vec::new(), compression);
         encoder
             .write_all(&serialized)
             .context("Failed to compress object")?;

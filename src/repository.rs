@@ -30,7 +30,7 @@ impl Repository {
         let gitdir = worktree.join(".git");
 
         if gitdir.exists() {
-            return Err(anyhow::anyhow!("Repository already exists"));
+            return Err(anyhow::anyhow!("Cannot initialize: .git directory already exists"));
         }
 
         // Create directory structure
@@ -64,8 +64,14 @@ impl Repository {
 
     /// Get the path for an object file
     fn object_path(&self, hash: &str) -> Result<PathBuf> {
-        if hash.len() < 2 {
-            return Err(anyhow::anyhow!("Invalid hash: too short"));
+        if hash.len() != 40 {
+            return Err(anyhow::anyhow!(
+                "Invalid hash: expected 40 characters, got {}",
+                hash.len()
+            ));
+        }
+        if !hash.chars().all(|c| c.is_ascii_hexdigit()) {
+            return Err(anyhow::anyhow!("Invalid hash: contains non-hexadecimal characters"));
         }
         let (dir, file) = hash.split_at(2);
         Ok(self.gitdir.join("objects").join(dir).join(file))

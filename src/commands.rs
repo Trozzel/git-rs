@@ -31,14 +31,8 @@ pub fn cat_file(hash: &str, repo_path: Option<&Path>) -> Result<()> {
     let repo = Repository::new(repo_path)?;
     let object = repo.read_object(hash)?;
 
-    match object.obj_type {
-        ObjectType::Blob => {
-            print!("{}", String::from_utf8_lossy(&object.data));
-        }
-        ObjectType::Tree | ObjectType::Commit | ObjectType::Tag => {
-            print!("{}", String::from_utf8_lossy(&object.data));
-        }
-    }
+    // All object types are printed the same way
+    print!("{}", String::from_utf8_lossy(&object.data));
 
     Ok(())
 }
