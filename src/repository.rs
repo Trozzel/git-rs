@@ -63,15 +63,18 @@ impl Repository {
     }
 
     /// Get the path for an object file
-    fn object_path(&self, hash: &str) -> PathBuf {
+    fn object_path(&self, hash: &str) -> Result<PathBuf> {
+        if hash.len() < 2 {
+            return Err(anyhow::anyhow!("Invalid hash: too short"));
+        }
         let (dir, file) = hash.split_at(2);
-        self.gitdir.join("objects").join(dir).join(file)
+        Ok(self.gitdir.join("objects").join(dir).join(file))
     }
 
     /// Write an object to the repository
     pub fn write_object(&self, object: &Object) -> Result<String> {
         let hash = object.hash();
-        let path = self.object_path(&hash);
+        let path = self.object_path(&hash)?;
 
         // Create directory if it doesn't exist
         if let Some(parent) = path.parent() {
@@ -89,7 +92,7 @@ impl Repository {
 
     /// Read an object from the repository
     pub fn read_object(&self, hash: &str) -> Result<Object> {
-        let path = self.object_path(hash);
+        let path = self.object_path(hash)?;
 
         if !path.exists() {
             return Err(anyhow::anyhow!("Object {} not found", hash));
@@ -101,7 +104,7 @@ impl Repository {
 
     /// Check if an object exists in the repository
     pub fn object_exists(&self, hash: &str) -> bool {
-        self.object_path(hash).exists()
+        self.object_path(hash).map(|p| p.exists()).unwrap_or(false)
     }
 }
 

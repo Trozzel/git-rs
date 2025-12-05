@@ -41,9 +41,9 @@ Computes the SHA-1 hash of a file. With `-w`, writes the object to the repositor
 
 Example:
 ```bash
-echo "hello world" > test.txt
+printf "hello world" > test.txt
 git-rs hash-object -w test.txt
-# Output: 3b18e512dba79e4c8300dd08aeb37f8e728b8dad
+# Output: 95d09f2b10159347eece71399a7e2e907ea3df4f
 ```
 
 ### Inspect an object
@@ -58,13 +58,13 @@ git-rs cat-file [-t|-s|-p] <object>
 
 Examples:
 ```bash
-git-rs cat-file -t 3b18e512dba79e4c8300dd08aeb37f8e728b8dad
+git-rs cat-file -t 95d09f2b10159347eece71399a7e2e907ea3df4f
 # Output: blob
 
-git-rs cat-file -s 3b18e512dba79e4c8300dd08aeb37f8e728b8dad
-# Output: 12
+git-rs cat-file -s 95d09f2b10159347eece71399a7e2e907ea3df4f
+# Output: 11
 
-git-rs cat-file -p 3b18e512dba79e4c8300dd08aeb37f8e728b8dad
+git-rs cat-file -p 95d09f2b10159347eece71399a7e2e907ea3df4f
 # Output: hello world
 ```
 
